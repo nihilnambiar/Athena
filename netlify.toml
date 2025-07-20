@@ -1,6 +1,7 @@
 [build]
   publish = "dist"
   command = "npm run build"
+  functions = "netlify/functions"
 
 [build.environment]
   NODE_VERSION = "18"
@@ -8,10 +9,4 @@
 [[redirects]]
   from = "/*"
   to = "/index.html"
-  status = 200
-
-[context.production.environment]
-  VITE_API_URL = "https://your-backend-url.herokuapp.com"
-
-[context.deploy-preview.environment]
-  VITE_API_URL = "https://your-backend-url.herokuapp.com" 
+  status = 200 

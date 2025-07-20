@@ -1,0 +1,10 @@
+{
+  "name": "aithena-functions",
+  "version": "1.0.0",
+  "description": "Netlify Functions for AIthena",
+  "dependencies": {
+    "node-fetch": "^2.6.7",
+    "pdf-parse": "^1.1.1",
+    "tesseract.js": "^4.1.1"
+  }
+} 
