@@ -76,3 +76,5 @@ backend/uploads/
 # Frontend specific
 src/.vite/
 .cache/ 
+# Local Netlify folder
+.netlify
