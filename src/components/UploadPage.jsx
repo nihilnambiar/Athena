@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useDropzone } from 'react-dropzone'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import axios from 'axios'
+import { api } from '../services/api'
 import { 
   Upload, 
   FileText, 
@@ -61,18 +61,12 @@ const UploadPage = () => {
     try {
       let allText = ''
       for (const fileObj of files) {
-        const formData = new FormData()
-        formData.append(fileObj.type.startsWith('image/') ? 'image' : 'pdf', fileObj.file)
-        let endpoint = fileObj.type.startsWith('image/') ? '/api/ocr' : '/api/pdf'
+        console.log(`Processing ${fileObj.name} with Netlify Functions`)
         
-        console.log(`Processing ${fileObj.name} with endpoint ${endpoint}`)
+        const result = await api.processFile(fileObj.file)
         
-        const { data } = await axios.post(endpoint, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        })
-        
-        if (data.text) {
-          allText += data.text + '\n'
+        if (result.text) {
+          allText += result.text + '\n'
           console.log(`Successfully extracted text from ${fileObj.name}`)
         } else {
           console.warn(`No text extracted from ${fileObj.name}`)
@@ -88,16 +82,8 @@ const UploadPage = () => {
       }
     } catch (error) {
       console.error('File processing error:', error)
-      const errorMessage = error.response?.data?.error || error.message || 'Error processing files'
-      const errorDetails = error.response?.data?.details || ''
-      
-      // Show both error message and details if available
-      if (errorDetails) {
-        toast.error(`${errorMessage}: ${errorDetails}`)
-      } else {
-        toast.error(errorMessage)
-      }
-      
+      const errorMessage = error.message || 'Error processing files'
+      toast.error(errorMessage)
       setCurrentStep(1) // Go back to upload step
     } finally {
       setProcessing(false)

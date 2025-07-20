@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useLocation, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import axios from 'axios'
+import { api } from '../services/api'
 import { 
   Brain, 
   Target, 
@@ -51,14 +51,12 @@ const QuizGenerator = () => {
     setDetectingTopics(true);
     try {
       console.log('Detecting topics from extracted text...');
-      const { data } = await axios.post('/api/detect-topics', {
-        text: extractedText
-      });
+      const result = await api.detectTopics(extractedText);
       
-      if (data.topics && data.topics.length > 0) {
-        console.log('Detected topics:', data.topics);
-        setDetectedTopics(data.topics);
-        setQuizConfig(prev => ({ ...prev, topic: data.topics[0] }));
+      if (result.topics && result.topics.length > 0) {
+        console.log('Detected topics:', result.topics);
+        setDetectedTopics(result.topics);
+        setQuizConfig(prev => ({ ...prev, topic: result.topics[0].name }));
       } else {
         // Fallback to generic topics if AI detection fails
         const fallbackTopics = ['General Content', 'Key Concepts', 'Main Topics'];
@@ -98,7 +96,7 @@ const QuizGenerator = () => {
       console.log('Generating quiz with config:', quizConfig);
       console.log('Extracted text length:', extractedText.length);
       
-      const { data } = await axios.post('/api/generate-quiz', {
+      const result = await api.generateQuiz({
         text: extractedText,
         topic: quizConfig.topic,
         questionCount: quizConfig.questionCount,
@@ -108,10 +106,10 @@ const QuizGenerator = () => {
         timeLimit: quizConfig.timeLimit
       })
       
-      console.log('Quiz generation response:', data);
+      console.log('Quiz generation response:', result);
       
-      if (data.quiz && data.quiz.questions && data.quiz.questions.length > 0) {
-        setGeneratedQuiz(data.quiz)
+      if (result.questions && result.questions.length > 0) {
+        setGeneratedQuiz(result)
         setCurrentStep(3)
         toast.success('Quiz generated successfully!')
       } else {
@@ -119,12 +117,9 @@ const QuizGenerator = () => {
       }
     } catch (error) {
       console.error('Quiz generation error:', error);
-      console.error('Error response:', error.response?.data);
       
       let errorMessage = 'Error generating quiz';
-      if (error.response?.data?.error) {
-        errorMessage = error.response.data.error;
-      } else if (error.message) {
+      if (error.message) {
         errorMessage = error.message;
       }
       
@@ -237,7 +232,7 @@ const QuizGenerator = () => {
                       >
                         <option value="">Choose a topic...</option>
                         {detectedTopics.map((topic, index) => (
-                          <option key={index} value={topic}>{topic}</option>
+                          <option key={index} value={topic.name}>{topic.name}</option>
                         ))}
                       </select>
                     )}
