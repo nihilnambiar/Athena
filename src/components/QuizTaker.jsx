@@ -32,6 +32,9 @@ const QuizTaker = () => {
   const [showConfetti, setShowConfetti] = useState(false)
   const [quizStarted, setQuizStarted] = useState(false)
 
+  // Default time limit - can be overridden by quiz config
+  const timeLimit = quiz?.timeLimit || 30
+
   useEffect(() => {
     if (!quiz) {
       console.error('No quiz data found')
@@ -64,18 +67,18 @@ const QuizTaker = () => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           handleNextQuestion()
-          return quiz.config.timeLimit
+          return timeLimit
         }
         return prev - 1
       })
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [quizStarted, isPaused, showResults, currentQuestion])
+  }, [quizStarted, isPaused, showResults, currentQuestion, timeLimit])
 
   const startQuiz = () => {
     setQuizStarted(true)
-    setTimeLeft(quiz.config.timeLimit)
+    setTimeLeft(timeLimit)
   }
 
   const handleAnswer = (answer) => {
@@ -101,7 +104,7 @@ const QuizTaker = () => {
         console.log('Moving to question:', nextQuestion)
         return nextQuestion
       })
-      setTimeLeft(quiz.config.timeLimit)
+      setTimeLeft(timeLimit)
     } else {
       console.log('Finishing quiz')
       finishQuiz()
@@ -111,7 +114,7 @@ const QuizTaker = () => {
   const handlePreviousQuestion = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(prev => prev - 1)
-      setTimeLeft(quiz.config.timeLimit)
+      setTimeLeft(timeLimit)
     }
   }
 
@@ -212,7 +215,7 @@ const QuizTaker = () => {
                 <Timer className="w-5 h-5 text-primary-600" />
                 <span className="font-semibold">Time Limit</span>
               </div>
-              <p className="text-gray-600">{quiz.config.timeLimit} seconds per question</p>
+              <p className="text-gray-600">{timeLimit} seconds per question</p>
             </div>
             <div className="bg-gray-50 rounded-lg p-4">
               <div className="flex items-center space-x-2 mb-2">

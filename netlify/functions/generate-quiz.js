@@ -136,6 +136,7 @@ For fill-blank, use underscores in the question: "The capital of France is _____
       questions: normalizedQuestions,
       totalQuestions: normalizedQuestions.length,
       difficulty: difficulty,
+      timeLimit: questionCount * 30, // Default 30 seconds per question
       createdAt: new Date().toISOString()
     };
 
