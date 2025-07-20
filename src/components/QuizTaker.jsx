@@ -222,7 +222,7 @@ const QuizTaker = () => {
                 <BarChart3 className="w-5 h-5 text-primary-600" />
                 <span className="font-semibold">Difficulty</span>
               </div>
-              <p className="text-gray-600 capitalize">{quiz.config.difficulty}</p>
+              <p className="text-gray-600 capitalize">{quiz.difficulty || 'Medium'}</p>
             </div>
           </div>
 
