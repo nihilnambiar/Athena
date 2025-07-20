@@ -193,36 +193,36 @@ const QuizTaker = () => {
 
   if (!quizStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-dark-900 via-dark-800 to-primary-900 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="card p-12 text-center max-w-2xl"
+          className="card p-12 text-center max-w-2xl bg-dark-800 border border-gray-700"
         >
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl mb-6 shadow-xl">
             <Brain className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-display font-bold mb-4">
+          <h1 className="text-3xl md:text-4xl font-display font-bold mb-4 text-white">
             {quiz.title}
           </h1>
-          <p className="text-gray-600 mb-8">
+          <p className="text-gray-300 mb-8">
             Get ready to test your knowledge! This quiz contains {quiz.questions.length} questions.
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-gray-50 rounded-lg p-4">
+            <div className="bg-gray-700 rounded-lg p-4 border border-gray-600">
               <div className="flex items-center space-x-2 mb-2">
-                <Timer className="w-5 h-5 text-primary-600" />
-                <span className="font-semibold">Time Limit</span>
+                <Timer className="w-5 h-5 text-primary-400" />
+                <span className="font-semibold text-white">Time Limit</span>
               </div>
-              <p className="text-gray-600">{timeLimit} seconds per question</p>
+              <p className="text-gray-300">{timeLimit} seconds per question</p>
             </div>
-            <div className="bg-gray-50 rounded-lg p-4">
+            <div className="bg-gray-700 rounded-lg p-4 border border-gray-600">
               <div className="flex items-center space-x-2 mb-2">
-                <BarChart3 className="w-5 h-5 text-primary-600" />
-                <span className="font-semibold">Difficulty</span>
+                <BarChart3 className="w-5 h-5 text-primary-400" />
+                <span className="font-semibold text-white">Difficulty</span>
               </div>
-              <p className="text-gray-600 capitalize">{quiz.difficulty || 'Medium'}</p>
+              <p className="text-gray-300 capitalize">{quiz.difficulty || 'Medium'}</p>
             </div>
           </div>
 
@@ -309,216 +309,186 @@ const QuizTaker = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="card p-8 mb-8"
+            transition={{ delay: 0.1 }}
+            className="bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl p-6 text-center shadow-lg"
           >
-            {/* Header */}
-            <div className="text-center mb-8">
-              {score >= 80 ? (
-                <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mb-6 shadow-xl relative">
-                  <div className="absolute inset-0 rounded-full border-4 border-green-400/30"></div>
-                  <Award className="w-12 h-12 text-white relative z-10" />
-                </div>
-              ) : (
-                <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-orange-500 to-red-500 rounded-full mb-6 shadow-xl relative">
-                  <div className="absolute inset-0 rounded-full border-4 border-orange-400/30"></div>
-                  <Brain className="w-12 h-12 text-white relative z-10" />
-                </div>
-              )}
-              
-              <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 text-white">
-                Quiz Complete!
-              </h1>
-              <p className="text-xl text-gray-300 mb-8">
-                {score >= 80 ? 'Excellent work! You\'ve mastered this topic!' : 'Good effort! Here\'s how you can improve.'}
-              </p>
-            </div>
+            <div className="text-3xl font-bold text-white mb-2">{score}%</div>
+            <div className="text-primary-100">Overall Score</div>
+          </motion.div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl p-6 text-center shadow-lg"
+          >
+            <div className="text-3xl font-bold text-white mb-2">{correctQuestions.length}</div>
+            <div className="text-green-100">Correct</div>
+          </motion.div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-gradient-to-r from-red-500 to-orange-500 rounded-xl p-6 text-center shadow-lg"
+          >
+            <div className="text-3xl font-bold text-white mb-2">{incorrectQuestions.length}</div>
+            <div className="text-red-100">Incorrect</div>
+          </motion.div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl p-6 text-center shadow-lg"
+          >
+            <div className="text-3xl font-bold text-white mb-2">{attemptedQuestions.length}</div>
+            <div className="text-blue-100">Attempted</div>
+          </motion.div>
+        </div>
 
-            {/* Score Overview */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl p-6 text-center shadow-lg"
-              >
-                <div className="text-3xl font-bold text-white mb-2">{score}%</div>
-                <div className="text-primary-100">Overall Score</div>
-              </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl p-6 text-center shadow-lg"
-              >
-                <div className="text-3xl font-bold text-white mb-2">{correctQuestions.length}</div>
-                <div className="text-green-100">Correct</div>
-              </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="bg-gradient-to-r from-red-500 to-orange-500 rounded-xl p-6 text-center shadow-lg"
-              >
-                <div className="text-3xl font-bold text-white mb-2">{incorrectQuestions.length}</div>
-                <div className="text-red-100">Incorrect</div>
-              </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl p-6 text-center shadow-lg"
-              >
-                <div className="text-3xl font-bold text-white mb-2">{attemptedQuestions.length}</div>
-                <div className="text-blue-100">Attempted</div>
-              </motion.div>
-            </div>
-
-            {/* Performance Analytics */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              {/* Question Type Breakdown */}
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 }}
-                className="bg-dark-800 rounded-xl p-6 shadow-lg"
-              >
-                <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                  <BarChart3 className="w-5 h-5 mr-2 text-primary-400" />
-                  Question Type Performance
-                </h3>
-                <div className="space-y-4">
-                  {['multiple-choice', 'true-false', 'short-answer', 'fill-blank'].map((type, index) => {
-                    const typeQuestions = questionAnalytics.filter(q => q.type === type)
-                    if (typeQuestions.length === 0) return null
-                    
-                    const correct = typeQuestions.filter(q => q.isCorrect).length
-                    const percentage = Math.round((correct / typeQuestions.length) * 100)
-                    
-                    return (
-                      <motion.div 
-                        key={type} 
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.6 + index * 0.1 }}
-                        className="flex items-center justify-between"
-                      >
-                        <span className="text-gray-300 capitalize">{type.replace('-', ' ')}</span>
-                        <div className="flex items-center space-x-3">
-                          <div className="w-20 bg-gray-700 rounded-full h-2">
-                            <motion.div 
-                              className="bg-gradient-to-r from-primary-500 to-secondary-500 h-2 rounded-full"
-                              initial={{ width: 0 }}
-                              animate={{ width: `${percentage}%` }}
-                              transition={{ delay: 0.8 + index * 0.1, duration: 0.8 }}
-                            />
-                          </div>
-                          <span className="text-white font-semibold">{percentage}%</span>
-                        </div>
-                      </motion.div>
-                    )
-                  })}
-                </div>
-              </motion.div>
-
-              {/* Improvement Tips */}
-              <motion.div 
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 }}
-                className="bg-dark-800 rounded-xl p-6 shadow-lg"
-              >
-                <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                  <Brain className="w-5 h-5 mr-2 text-primary-400" />
-                  Improvement Tips
-                </h3>
-                <div className="space-y-3">
-                  {getImprovementTips().map((tip, index) => (
-                    <motion.div 
-                      key={index} 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.6 + index * 0.1 }}
-                      className="flex items-start space-x-3"
-                    >
-                      <div className="w-2 h-2 bg-primary-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <p className="text-gray-300 text-sm">{tip}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Detailed Review */}
-            {incorrectQuestions.length > 0 && (
-              <div className="bg-dark-800 rounded-xl p-6 mb-8">
-                <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                  <XCircle className="w-5 h-5 mr-2 text-red-400" />
-                  Review Your Mistakes
-                </h3>
-                <div className="space-y-4">
-                  {incorrectQuestions.map((q, index) => (
-                    <div key={index} className="border border-red-500/20 rounded-lg p-4 bg-red-500/5">
-                      <div className="flex items-start space-x-3">
-                        <XCircle className="w-5 h-5 text-red-400 mt-1 flex-shrink-0" />
-                        <div className="flex-1">
-                          <p className="text-white font-medium mb-2">{q.question}</p>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                            <div>
-                              <span className="text-red-400">Your Answer:</span>
-                              <p className="text-gray-300 mt-1">
-                                {q.type === 'short-answer' || q.type === 'fill-blank' 
-                                  ? (q.userAnswer || 'No answer provided')
-                                  : q.userAnswer !== undefined 
-                                    ? `Option ${q.userAnswer + 1}`
-                                    : 'No answer provided'
-                                }
-                              </p>
-                            </div>
-                            <div>
-                              <span className="text-green-400">Correct Answer:</span>
-                              <p className="text-gray-300 mt-1">
-                                {q.type === 'short-answer' || q.type === 'fill-blank'
-                                  ? 'See explanation below'
-                                  : `Option ${q.correctAnswer + 1}`
-                                }
-                              </p>
-                            </div>
-                          </div>
-                          {q.explanation && (
-                            <div className="mt-3 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                              <span className="text-blue-400 text-sm font-medium">Explanation:</span>
-                              <p className="text-gray-300 text-sm mt-1">{q.explanation}</p>
-                            </div>
-                          )}
-                        </div>
+        {/* Performance Analytics */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* Question Type Breakdown */}
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-dark-800 rounded-xl p-6 shadow-lg"
+          >
+            <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+              <BarChart3 className="w-5 h-5 mr-2 text-primary-400" />
+              Question Type Performance
+            </h3>
+            <div className="space-y-4">
+              {['multiple-choice', 'true-false', 'short-answer', 'fill-blank'].map((type, index) => {
+                const typeQuestions = questionAnalytics.filter(q => q.type === type)
+                if (typeQuestions.length === 0) return null
+                
+                const correct = typeQuestions.filter(q => q.isCorrect).length
+                const percentage = Math.round((correct / typeQuestions.length) * 100)
+                
+                return (
+                  <motion.div 
+                    key={type} 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 + index * 0.1 }}
+                    className="flex items-center justify-between"
+                  >
+                    <span className="text-gray-300 capitalize">{type.replace('-', ' ')}</span>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-20 bg-gray-700 rounded-full h-2">
+                        <motion.div 
+                          className="bg-gradient-to-r from-primary-500 to-secondary-500 h-2 rounded-full"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${percentage}%` }}
+                          transition={{ delay: 0.8 + index * 0.1, duration: 0.8 }}
+                        />
                       </div>
+                      <span className="text-white font-semibold">{percentage}%</span>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
+                  </motion.div>
+                )
+              })}
+            </div>
+          </motion.div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap justify-center gap-4">
-              <button
-                onClick={() => navigate('/')}
-                className="btn-primary flex items-center space-x-2"
-              >
-                <Home className="w-5 h-5" />
-                <span>Back to Home</span>
-              </button>
-              <button
-                onClick={() => window.location.reload()}
-                className="btn-secondary flex items-center space-x-2"
-              >
-                <RotateCcw className="w-5 h-5" />
-                <span>Retake Quiz</span>
-              </button>
+          {/* Improvement Tips */}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-dark-800 rounded-xl p-6 shadow-lg"
+          >
+            <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+              <Brain className="w-5 h-5 mr-2 text-primary-400" />
+              Improvement Tips
+            </h3>
+            <div className="space-y-3">
+              {getImprovementTips().map((tip, index) => (
+                <motion.div 
+                  key={index} 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 + index * 0.1 }}
+                  className="flex items-start space-x-3"
+                >
+                  <div className="w-2 h-2 bg-primary-400 rounded-full mt-2 flex-shrink-0"></div>
+                  <p className="text-gray-300 text-sm">{tip}</p>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>
-      </div>
-    )
+
+        {/* Detailed Review */}
+        {incorrectQuestions.length > 0 && (
+          <div className="bg-dark-800 rounded-xl p-6 mb-8">
+            <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+              <XCircle className="w-5 h-5 mr-2 text-red-400" />
+              Review Your Mistakes
+            </h3>
+            <div className="space-y-4">
+              {incorrectQuestions.map((q, index) => (
+                <div key={index} className="border border-red-500/20 rounded-lg p-4 bg-red-500/5">
+                  <div className="flex items-start space-x-3">
+                    <XCircle className="w-5 h-5 text-red-400 mt-1 flex-shrink-0" />
+                    <div className="flex-1">
+                      <p className="text-white font-medium mb-2">{q.question}</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <span className="text-red-400">Your Answer:</span>
+                          <p className="text-gray-300 mt-1">
+                            {q.type === 'short-answer' || q.type === 'fill-blank' 
+                              ? (q.userAnswer || 'No answer provided')
+                              : q.userAnswer !== undefined 
+                                ? `Option ${q.userAnswer + 1}`
+                                : 'No answer provided'
+                            }
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-green-400">Correct Answer:</span>
+                          <p className="text-gray-300 mt-1">
+                            {q.type === 'short-answer' || q.type === 'fill-blank'
+                              ? 'See explanation below'
+                              : `Option ${q.correctAnswer + 1}`
+                            }
+                          </p>
+                        </div>
+                      </div>
+                      {q.explanation && (
+                        <div className="mt-3 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                          <span className="text-blue-400 text-sm font-medium">Explanation:</span>
+                          <p className="text-gray-300 text-sm mt-1">{q.explanation}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Action Buttons */}
+        <div className="flex flex-wrap justify-center gap-4">
+          <button
+            onClick={() => navigate('/')}
+            className="btn-primary flex items-center space-x-2"
+          >
+            <Home className="w-5 h-5" />
+            <span>Back to Home</span>
+          </button>
+          <button
+            onClick={() => window.location.reload()}
+            className="btn-secondary flex items-center space-x-2"
+          >
+            <RotateCcw className="w-5 h-5" />
+            <span>Retake Quiz</span>
+          </button>
+        </div>
+      </motion.div>
+    </div>
+  )
   }
 
   const question = quiz.questions[currentQuestion]
@@ -571,25 +541,25 @@ const QuizTaker = () => {
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-800">{quiz.title}</h1>
-              <p className="text-gray-600">Question {currentQuestion + 1} of {quiz.questions.length}</p>
+              <h1 className="text-2xl font-bold text-white">{quiz.title}</h1>
+              <p className="text-gray-300">Question {currentQuestion + 1} of {quiz.questions.length}</p>
             </div>
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setIsPaused(!isPaused)}
-                className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
+                className="p-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors text-white"
               >
                 {isPaused ? <Play className="w-5 h-5" /> : <Pause className="w-5 h-5" />}
               </button>
-              <div className="flex items-center space-x-2 bg-red-100 px-3 py-2 rounded-lg">
-                <Clock className="w-5 h-5 text-red-600" />
-                <span className="font-semibold text-red-600">{timeLeft}s</span>
+              <div className="flex items-center space-x-2 bg-red-900/50 px-3 py-2 rounded-lg border border-red-500/30">
+                <Clock className="w-5 h-5 text-red-400" />
+                <span className="font-semibold text-red-400">{timeLeft}s</span>
               </div>
             </div>
           </div>
           
           {/* Progress Bar */}
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-gray-700 rounded-full h-2">
             <motion.div
               className="bg-gradient-to-r from-primary-500 to-secondary-500 h-2 rounded-full"
               initial={{ width: 0 }}
@@ -607,10 +577,10 @@ const QuizTaker = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.3 }}
-            className="card p-8 mb-8"
+            className="card p-8 mb-8 bg-dark-800 border border-gray-700"
           >
             <div className="flex items-center justify-between mb-6">
-              <span className="text-sm font-medium text-gray-500">
+              <span className="text-sm font-medium text-gray-400">
                 {getQuestionTypeLabel(question.type)}
               </span>
               <div className={`px-3 py-1 rounded-full text-xs font-medium text-white bg-gradient-to-r ${getQuestionTypeColor(question.type)}`}>
@@ -618,7 +588,7 @@ const QuizTaker = () => {
               </div>
             </div>
 
-            <h2 className="text-xl md:text-2xl font-semibold mb-8 text-gray-800 leading-relaxed">
+            <h2 className="text-xl md:text-2xl font-semibold mb-8 text-white leading-relaxed">
               {question.question}
             </h2>
 
@@ -637,21 +607,21 @@ const QuizTaker = () => {
                         e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px'
                       }}
                       placeholder="Enter your answer here..."
-                      className={`w-full p-4 rounded-xl border-2 transition-all duration-200 resize-none ${
+                      className={`w-full p-4 rounded-xl border-2 transition-all duration-200 resize-none bg-gray-800 text-white placeholder-gray-400 ${
                         answers[currentQuestion] 
-                          ? 'border-primary-500 bg-primary-25 shadow-lg' 
-                          : 'border-gray-200 bg-white focus:border-primary-500 focus:ring-2 focus:ring-primary-200'
+                          ? 'border-primary-500 bg-gray-700 shadow-lg' 
+                          : 'border-gray-600 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20'
                       }`}
                       rows={3}
                       style={{ minHeight: '120px', maxHeight: '200px' }}
                     />
                     {answers[currentQuestion] && (
                       <div className="absolute top-3 right-3">
-                        <CheckCircle className="w-5 h-5 text-primary-500" />
+                        <CheckCircle className="w-5 h-5 text-primary-400" />
                       </div>
                     )}
                   </div>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm text-gray-400">
                     Type your answer in the text box above. Be as detailed as possible.
                   </div>
                 </div>
@@ -665,21 +635,21 @@ const QuizTaker = () => {
                     onClick={() => handleAnswer(index)}
                     className={`w-full p-4 rounded-xl border-2 transition-all duration-200 text-left ${
                       answers[currentQuestion] === index
-                        ? 'border-primary-500 bg-primary-50 shadow-lg'
-                        : 'border-gray-200 bg-white hover:border-primary-300 hover:bg-primary-25'
+                        ? 'border-primary-500 bg-gray-700 shadow-lg'
+                        : 'border-gray-600 bg-gray-800 hover:border-primary-400 hover:bg-gray-700'
                     }`}
                   >
                     <div className="flex items-center space-x-3">
                       <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
                         answers[currentQuestion] === index
                           ? 'border-primary-500 bg-primary-500'
-                          : 'border-gray-300'
+                          : 'border-gray-500'
                       }`}>
                         {answers[currentQuestion] === index && (
                           <CheckCircle className="w-4 h-4 text-white" />
                         )}
                       </div>
-                      <span className="font-medium text-gray-800">{option}</span>
+                      <span className="font-medium text-white">{option}</span>
                     </div>
                   </motion.button>
                 ))
@@ -697,13 +667,13 @@ const QuizTaker = () => {
           <button
             onClick={handlePreviousQuestion}
             disabled={currentQuestion === 0}
-            className="btn-secondary flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-secondary flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed bg-gray-700 hover:bg-gray-600 text-white border-gray-600"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Previous</span>
           </button>
 
-          <div className="flex items-center space-x-2 text-sm text-gray-500">
+          <div className="flex items-center space-x-2 text-sm text-gray-400">
             {Object.keys(answers).filter(key => {
               const answer = answers[key]
               return answer !== undefined && answer !== null && answer !== ''
